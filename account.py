@@ -1,5 +1,6 @@
 import sys
 import verbs, nouns, adjectives, adverbs
+import copy
 
 
 class Account:
@@ -12,11 +13,34 @@ class Account:
         self.password = password
         #possibly email as well
 
-    def get_password_strength(self):
+    def get_password_strength(self, score=None, password=None):
         """returns the users password strength for the account
         :return:
         """
-        pass
+
+        common_words = verbs + nouns + adjectives + adverbs
+        alpha_pattern = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+        num_pattern = "0123456789876543210"
+        score = score if score else 0
+        password = password if password else copy.deepcopy(self.password)
+        phrase = ""
+
+        for character in password:
+            phrase += character
+
+            if phrase in common_words:
+                score -= 1
+                return score + self.get_password_strength(score=score, password=password.replace(phrase, ""))
+
+            elif (phrase in alpha_pattern) or (phrase in reversed(alpha_pattern)):
+                score -= 1
+                return score + self.get_password_strength(score=score, password=password.replace(phrase, ""))
+
+            elif phrase in num_pattern:
+                score -= 1
+                return score + self.get_password_strength(score=score, password=password.replace(phrase, ""))
+
+        return score
 
     def password_feedback(self):
         SPECIALS = ('!', '@', '#', '$')
@@ -62,19 +86,19 @@ class Account:
 
         return errors
 
-    def change_password(self):
+    def change_password(self, old_password, new_password):
         """changes the password for the account.
         :return:
         """
         pass
 
-    def change_username(self):
+    def change_username(self, new_username, password):
         """changes the username for the account.
         :return:
         """
         pass
 
-    def change_account_name(self):
+    def change_account_name(self, new_acount_name, password):
         """changes the username for the account.
         :return:
         """
@@ -85,17 +109,18 @@ class Account:
 
         :return:
         """
-        pass
+        return self.password
 
     def get_username(self):
         """gets the username for the account.
 
         :return:
         """
-        pass
+        return self.username
 
     def get_account_name(self):
         """gets the account_name for the account.
 
         :return:
         """
+        return self.account_name
