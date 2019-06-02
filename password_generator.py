@@ -77,8 +77,7 @@ def password_inspector(password: str):
     if not specials_condition:
         errors.append("The Password must have a special character: '!@#$'.")
 
-    if not errors:
-        return "\n".join(errors)
+    return errors
 
 
 if __name__ == "__main__":
