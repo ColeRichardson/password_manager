@@ -1,5 +1,5 @@
 import sys
-im
+import verbs, nouns, adjectives, adverbs
 
 
 class Account:
