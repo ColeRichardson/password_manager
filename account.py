@@ -23,28 +23,24 @@ class Account:
         num_pattern = "0123456789876543210"
         score = score if score else 0
         password = password if password else copy.deepcopy(self.password)
-        phrase = ""
+        phrase = password[:2]
 
-        for character in password:
+        for character in password[2:]:
+
+            condition1 = (phrase in common_words) or (phrase in num_pattern)
+            condition2 = (phrase in alpha_pattern) or (phrase in reversed(alpha_pattern))
+
+            if condition1 or condition2:
+                score -= 1
+                return score + self.get_password_strength(score=score, password=password.replace(phrase, ""))
+
             phrase += character
-
-            if phrase in common_words:
-                score -= 1
-                return score + self.get_password_strength(score=score, password=password.replace(phrase, ""))
-
-            elif (phrase in alpha_pattern) or (phrase in reversed(alpha_pattern)):
-                score -= 1
-                return score + self.get_password_strength(score=score, password=password.replace(phrase, ""))
-
-            elif phrase in num_pattern:
-                score -= 1
-                return score + self.get_password_strength(score=score, password=password.replace(phrase, ""))
 
         return score
 
     def password_feedback(self):
         SPECIALS = ('!', '@', '#', '$')
-        errors = []
+        feedback = []
         byte_condition = sys.getsizeof(self.password) <= 1024  # Sees the amount of bytes the password has
         digit_condition = False
         upper_condition = False
@@ -53,10 +49,10 @@ class Account:
         specials_condition = False
 
         if not byte_condition:
-            errors.append("Your password is way too long. Decrease its length.")
+            feedback.append("Your password is way too long. Decrease its length.")
 
         if not length_condition:
-            errors.append("Password is too short. Make it at least 8 characters or longer.")
+            feedback.append("Password is too short. Make it at least 8 characters or longer.")
 
         for character in self.password:
 
@@ -76,15 +72,15 @@ class Account:
                 return "That's a perfect password."
 
         if not digit_condition:
-            errors.append("Add a numerical digit to your password.")
+            feedback.append("Add a numerical digit to your password.")
         if not upper_condition:
-            errors.append("The password must have an upper-case letter.")
+            feedback.append("The password must have an upper-case letter.")
         if not lower_condition:
-            errors.append("The password must have a lower-case letter.")
+            feedback.append("The password must have a lower-case letter.")
         if not specials_condition:
-            errors.append("The Password must have a special character: '!@#$'.")
+            feedback.append("The Password must have a special character: '!@#$'.")
 
-        return errors
+        return feedback
 
     def change_password(self, old_password, new_password):
         """changes the password for the account.
