@@ -7,11 +7,11 @@ class Account:
     """holds the information for an account
 
     """
-    def __init__(self, account_name, username, password):
+    def __init__(self, account_name, username, password, email):
         self.account_name = account_name
         self.username = username
         self.password = password
-        #possibly email as well
+        self.email = email
 
     def get_password_strength(self, score=None, password=None):
         """returns the users password strength for the account
