@@ -9,20 +9,15 @@ class GUI:
 
         self.status: 'register' or 'logon' or ''
         """
-        self.root = tk.TK() #initialize tkinter root
-        self.root.title = "Password Manager v0.1"
+        self.root = tk.Tk() #initialize tkinter root
 
         self.account_list = [] # holds account objects in the Gui class
         self._status = 'register' # holds the status of what window we are in
-        self.set_up_logon # prompt user with a button to ask to register
+        #self.username_entry = ""
+        #self.password_entry = ""
+        self.root.title("It's Managed")
+        self.setup_logon() # prompt user with a button to ask to register
 
-    def setup_register(self):
-        """sets up the gui to prompt the user to register an account.
-
-        :param self:
-        :return:
-        """
-        pass
 
     def setup_logon(self):
         """
@@ -31,7 +26,39 @@ class GUI:
         :param self:
         :return:
         """
-        pass
+
+        self.root.geometry("400x400")
+        username_frame = tk.Frame(self.root)
+        username_frame.pack()
+        password_frame = tk.Frame(self.root)
+        password_frame.pack()
+        button_frame = tk.Frame(self.root)
+        button_frame.pack()
+
+        username_label = tk.Label(username_frame, text="Username: ")
+        password_label = tk.Label(password_frame, text="Password: ")
+        username_entry = tk.Entry(username_frame)
+        password_entry = tk.Entry(password_frame)
+        login_button = tk.Button(button_frame, text="Login")
+        register_button = tk.Button(button_frame, text="Register", command=self.setup_register)
+
+        username_label.pack(side=tk.LEFT)
+        username_entry.pack(side=tk.LEFT)
+        password_label.pack(side=tk.LEFT)
+        password_entry.pack(side=tk.LEFT)
+        login_button.pack(side=tk.LEFT)
+        register_button.pack(side=tk.LEFT)
+
+    def setup_register(self):
+        """sets up the gui to prompt the user to register an account.
+
+        :param self:
+        :return:
+        """
+        self.root.geometry("500x500")
+
+
+
 
     def setup_main(self):
         """seets up the gui for the main windows of the application
