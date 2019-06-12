@@ -1,4 +1,5 @@
 import tkinter as tk
+from connection import Connection
 #import password_generator
 
 class GUI:
@@ -18,6 +19,7 @@ class GUI:
         self.root.title("It's Managed")
         self.setup_logon() # prompt user with a button to ask to register
 
+        self.sock = Connection('127.0.0.1', 55555)
 
     def setup_logon(self):
         """
@@ -39,7 +41,7 @@ class GUI:
         password_label = tk.Label(password_frame, text="Password: ")
         username_entry = tk.Entry(username_frame)
         password_entry = tk.Entry(password_frame)
-        login_button = tk.Button(button_frame, text="Login")
+        login_button = tk.Button(button_frame, text="Login", command=self.login)
         register_button = tk.Button(button_frame, text="Register", command=self.setup_register)
 
         username_label.pack(side=tk.LEFT)
@@ -48,6 +50,11 @@ class GUI:
         password_entry.pack(side=tk.LEFT)
         login_button.pack(side=tk.LEFT)
         register_button.pack(side=tk.LEFT)
+
+
+    def login(self, username: str, password: str):
+		#self.sock.login(username, password)
+        pass
 
     def setup_register(self):
         """sets up the gui to prompt the user to register an account.
