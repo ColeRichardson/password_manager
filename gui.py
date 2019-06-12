@@ -19,8 +19,7 @@ class GUI:
         self.root.title("It's Managed")
         self.setup_logon() # prompt user with a button to ask to register
 
-        self.sock = Connection('127.0.0.1', 55555)
-
+        self.sock = Connection('127.0.0.1', 55555) #comment this line out to run gui without connection
     def setup_logon(self):
         """
         sets up the gui for the logon window where user is prompted for username and password.
