@@ -10,7 +10,7 @@ class GUI:
         self.status: 'register' or 'logon' or ''
         """
         self.root = tk.Tk() #initialize tkinter root
-
+        #self.logon_window = tk.Toplevel()
         self.account_list = [] # holds account objects in the Gui class
         self._status = 'register' # holds the status of what window we are in
         #self.username_entry = ""
@@ -51,11 +51,16 @@ class GUI:
 
     def setup_register(self):
         """sets up the gui to prompt the user to register an account.
-
         :param self:
         :return:
         """
         self.root.geometry("500x500")
+        email_frame = tk.Frame(self.root)
+        email_label = tk.Label(email_frame, text="Please enter your email address: ")
+        email_entry = tk.Entry(email_frame)
+        email_label.pack()
+        email_entry.pack()
+        email_frame.pack(side=tk.TOP)
 
 
 
