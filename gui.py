@@ -20,9 +20,11 @@ class GUI:
         self.username_entry = ""
         self.password_entry = ""
         self.root = tk.Tk()  # initialize tkinter root
-
+        self.email_entry = ''  # holds the user_account email
         self.account_list = []  # holds account objects in the Gui class
         self._status = 'register'  # holds the status of what window we are in
+
+        self.user_password_entry = '' # holds the user_account password
 
         self.root.title("It's Managed")
         self.setup_logon()  # prompt user with a button to ask to register
@@ -37,6 +39,10 @@ class GUI:
         :param self:
         :return:
         """
+        # hide old widgets in gui
+        slaves = self.root.pack_slaves()
+        for l in slaves:
+                l.pack_forget()
 
         self.root.geometry('400x400')
         username_frame = tk.Frame(self.root)
@@ -53,7 +59,7 @@ class GUI:
         login_button = tk.Button(button_frame, text='Login',
                                  command=self.login)
         register_button = tk.Button(button_frame, text='Register',
-                                    command=self.register)
+                                    command=self.setup_register)
 
         username_label.pack(side=tk.LEFT)
         self.username_entry.pack(side=tk.LEFT)
@@ -61,6 +67,43 @@ class GUI:
         self.password_entry.pack(side=tk.LEFT)
         login_button.pack(side=tk.LEFT)
         register_button.pack(side=tk.LEFT)
+
+    def setup_register(self):
+        """sets up the gui to prompt the user to register an account.
+        :param self:
+        :return:
+        """
+        # TODO: add register button and check entry in confirm password,
+        #  to make sure they match
+
+        slaves = self.root.pack_slaves()
+        for l in slaves:
+                l.pack_forget()
+        self.root.geometry("500x500")
+
+        email_frame = tk.Frame(self.root)
+        email_frame.pack()
+        email_label = tk.Label(email_frame, text="Please enter your email address: ")
+        email_label.pack(side=tk.LEFT)
+        self.email_entry = tk.Entry(email_frame)
+        self.email_entry.pack(side=tk.RIGHT)
+
+        password_frame = tk.Frame(self.root)
+        password_frame.pack()
+        password_label = tk.Label(password_frame, text='Please enter your desired password: ')
+        password_label.pack(side=tk.LEFT)
+        self.user_password_entry = tk.Entry(password_frame)
+        self.user_password_entry.pack(side=tk.RIGHT)
+
+        confirm_password_frame = tk.Frame(self.root)
+        confirm_password_frame.pack()
+        confirm_password_entry = tk.Entry(confirm_password_frame)
+        confirm_password_entry.pack(side=tk.RIGHT)
+        confirm_password_label = tk.Label(confirm_password_frame, text='please confirm your password: ')
+        confirm_password_label.pack(side=tk.LEFT)
+
+        login_button = tk.Button(self.root, text='login', command=self.setup_logon)
+        login_button.pack()
 
     def login(self):
         user = self.username_entry.get()
@@ -72,20 +115,6 @@ class GUI:
             pass
         else:
             pass
-
-    def register(self):
-        """sets up the gui to prompt the user to register an account.
-        :param self:
-        :return:
-        """
-        self.root.geometry("500x500")
-        email_frame = tk.Frame(self.root)
-        email_label = tk.Label(email_frame, text="Please enter your email address: ")
-        email_entry = tk.Entry(email_frame)
-        email_label.pack()
-        email_entry.pack()
-        email_frame.pack(side=tk.TOP)
-
 
     def setup_main(self):
         """seets up the gui for the main windows of the application
