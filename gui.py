@@ -31,7 +31,7 @@ class GUI:
         self.setup_logon()  # prompt user with a button to ask to register
         self.confirm_password_entry = ''
 
-        #self.sock = Connection('127.0.0.1', 55555)
+        self.sock = Connection('127.0.0.1', 55555)
         # comment this line out to run gui without connection
 
     def cleanup(self):
@@ -107,7 +107,7 @@ class GUI:
         confirm_password_label = tk.Label(confirm_password_frame, text='please confirm your password: ')
         confirm_password_label.pack(side=tk.LEFT)
 
-        register_button = tk.Button(text='register account')
+        register_button = tk.Button(text='register account', command=self.register)
         check_password_button = tk.Button(text='check password')  # command=check_password
 
         register_button.pack()
@@ -121,11 +121,22 @@ class GUI:
         passwd = self.password_entry.get()
         print(user)
         print(passwd)
-        sock_response = self.sock.login(user, passwd)
-        if sock_response == 0:
+        if self.sock.login(user, passwd):
             pass
         else:
             pass
+
+    def register(self):
+        if True:# change to check password match
+            email = self.email_entry.get()
+            passwd = self.user_password_entry.get()
+            if self.sock.register(email, passwd):
+               pass
+        else:
+            print("passwords don't match")
+
+
+
 
     def setup_main(self):
         """sets up the gui for the main windows of the application
