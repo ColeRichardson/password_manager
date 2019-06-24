@@ -21,7 +21,7 @@ class GUI:
         self.username_entry = ""
         self.password_entry = ""
         self.root = tk.Tk()  # initialize tkinter root
-        self.email_entry = ''  # holds the user_account email
+        self.user_email_entry = ''  # holds the user_account email
         self.account_list = []  # holds account objects in the Gui class
         self._status = 'register'  # holds the status of what window we are in
 
@@ -90,8 +90,8 @@ class GUI:
         email_frame.pack()
         email_label = tk.Label(email_frame, text="Please enter your email address: ")
         email_label.pack(side=tk.LEFT)
-        self.email_entry = tk.Entry(email_frame)
-        self.email_entry.pack(side=tk.RIGHT)
+        self.user_email_entry = tk.Entry(email_frame)
+        self.user_email_entry.pack(side=tk.RIGHT)
 
         password_frame = tk.Frame(self.root)
         password_frame.pack()
@@ -127,16 +127,22 @@ class GUI:
             pass
 
     def register(self):
-        if True:# change to check password match
-            email = self.email_entry.get()
+        if self.check_passwords_match():# change to check password match
+            email = self.user_email_entry.get()
             passwd = self.user_password_entry.get()
             if self.sock.register(email, passwd):
                pass
         else:
             print("passwords don't match")
 
-
-
+    def check_passwords_match(self):
+        """checks if the text in the password field matches the text in the
+        confirm password field in register and in add_account.
+        """
+        if self.user_password_entry.get() == self.confirm_password_entry.get():
+            return True
+        else:
+            return False
 
     def setup_main(self):
         """sets up the gui for the main windows of the application
@@ -160,6 +166,7 @@ class GUI:
         copy password button: https://stackoverflow.com/questions/579687/how-do-i-copy-a-string-to-the-clipboard-on-windows-using-python
 
         """
+        self.cleanup()
         create_account_window = tk.Toplevel(self.root)
 
         account_name_frame = tk.Frame(create_account_window)
@@ -195,7 +202,6 @@ class GUI:
         email_frame = tk.Frame(create_account_window)
         email_frame.pack()
 
-
         create_account_frame = tk.Frame(create_account_window)
         create_account_frame.pack()
         create_account_button = tk.Button(create_account_frame, text='create account', command=self.create_account)
@@ -205,23 +211,14 @@ class GUI:
         """create an account object for the username and password the user gave.
         also add the account object to the account_list
         """
-
-
+        pass
 
 
     def setup_account_info(self):
         """sets up the gui to display relevant information about the account
         :return:
         """
-
-    def make_buttons(self):
-        """creates the tkinter buttons
-
-        :param self:
-        :return:
-        """
-
-        Button1 = tk.button()  # create a tkinter button
+        pass
 
 
 
