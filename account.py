@@ -1,5 +1,5 @@
 import sys
-import verbs, nouns, adjectives, adverbs
+#import verbs, nouns, adjectives, adverbs
 import copy
 
 
@@ -120,3 +120,22 @@ class Account:
         :return:
         """
         return self.account_name
+
+
+class UserAccount:
+    """
+    A class to represent the users account, has a email, password, and account_list
+    that holds a list of account objects.
+    """
+
+    def __init__(self, email, password):
+        self.email = email
+        self.password = password
+        self.account_list = []
+
+    def add_account(self):
+        """
+        adds the account object to the account_list
+        :return:
+        """
+        pass

@@ -3,6 +3,7 @@
 
 import tkinter as tk
 from connection import Connection
+import account
 
 
 # import password_generator
@@ -32,6 +33,14 @@ class GUI:
         #self.sock = Connection('127.0.0.1', 55555)
         # comment this line out to run gui without connection
 
+    def cleanup(self):
+        """
+        cleans up the window to prepare for new stage
+        """
+        slaves = self.root.pack_slaves()
+        for l in slaves:
+            l.pack_forget()
+
     def setup_logon(self):
         """
         sets up the gui for the logon window where user is prompted for username and password.
@@ -39,10 +48,7 @@ class GUI:
         :param self:
         :return:
         """
-        # hide old widgets in gui
-        slaves = self.root.pack_slaves()
-        for l in slaves:
-                l.pack_forget()
+        self.cleanup()
 
         self.root.geometry('400x400')
         username_frame = tk.Frame(self.root)
@@ -55,9 +61,9 @@ class GUI:
         username_label = tk.Label(username_frame, text='Username: ')
         password_label = tk.Label(password_frame, text='Password: ')
         self.username_entry = tk.Entry(username_frame)
-        self.password_entry = tk.Entry(password_frame)
+        self.password_entry = tk.Entry(password_frame, show='*')  # show is the character show for each key typed
         login_button = tk.Button(button_frame, text='Login',
-                                 command=self.login)
+                                 command=self.setup_main)  # changed this to setup_main for now for testing
         register_button = tk.Button(button_frame, text='Register',
                                     command=self.setup_register)
 
@@ -76,10 +82,8 @@ class GUI:
         # TODO: add register button and check entry in confirm password,
         #  to make sure they match
 
-        slaves = self.root.pack_slaves()
-        for l in slaves:
-                l.pack_forget()
-        self.root.geometry("500x500")
+        self.cleanup()
+        self.root.geometry("400x400")
 
         email_frame = tk.Frame(self.root)
         email_frame.pack()
@@ -92,12 +96,12 @@ class GUI:
         password_frame.pack()
         password_label = tk.Label(password_frame, text='Please enter your desired password: ')
         password_label.pack(side=tk.LEFT)
-        self.user_password_entry = tk.Entry(password_frame)
+        self.user_password_entry = tk.Entry(password_frame, show='*')
         self.user_password_entry.pack(side=tk.RIGHT)
 
         confirm_password_frame = tk.Frame(self.root)
         confirm_password_frame.pack()
-        confirm_password_entry = tk.Entry(confirm_password_frame)
+        confirm_password_entry = tk.Entry(confirm_password_frame, show='*')
         confirm_password_entry.pack(side=tk.RIGHT)
         confirm_password_label = tk.Label(confirm_password_frame, text='please confirm your password: ')
         confirm_password_label.pack(side=tk.LEFT)
@@ -117,14 +121,75 @@ class GUI:
             pass
 
     def setup_main(self):
-        """seets up the gui for the main windows of the application
+        """sets up the gui for the main windows of the application
         where the user can view all their passwords as buttons where the account name shows.
-
+        when the account button is clicked a topview window appears with the accounts username and password,
+        maybe have the option to copy the password.
         :param self:
         :return:
         """
+        self.cleanup()
+        self.root.geometry('400x400')
+        add_account_frame = tk.Frame(self.root)
+        add_account_frame.pack()
+        add_account_button = tk.Button(add_account_frame, text="add account", command=self.setup_create_account)
+        add_account_button.pack()
 
-        pass
+    def setup_create_account(self):
+        """
+        creates a toplevel window where the user can create an account, and add it to their
+        user account.
+        copy password button: https://stackoverflow.com/questions/579687/how-do-i-copy-a-string-to-the-clipboard-on-windows-using-python
+
+        """
+        create_account_window = tk.Toplevel(self.root)
+
+        account_name_frame = tk.Frame(create_account_window)
+        account_name_frame.pack()
+        account_name_label = tk.Label(account_name_frame, text='account name: ')
+        account_name_label.pack(side=tk.LEFT)
+        account_name_entry = tk.Entry(account_name_frame)
+        account_name_entry.pack(side=tk.RIGHT)
+
+        username_frame = tk.Frame(create_account_window)
+        username_frame.pack()
+        username_label = tk.Label(username_frame, text="username: ")
+        username_label.pack(side=tk.LEFT)
+        username_entry = tk.Entry(username_frame)
+        username_entry.pack(side=tk.RIGHT)
+
+        password_frame = tk.Frame(create_account_window)
+        password_frame.pack()
+        password_label = tk.Label(password_frame,
+                                  text='Please enter your desired password: ')
+        password_label.pack(side=tk.LEFT)
+        password_entry = tk.Entry(password_frame, show='*')
+        password_entry.pack(side=tk.RIGHT)
+
+        confirm_password_frame = tk.Frame(create_account_window)
+        confirm_password_frame.pack()
+        confirm_password_entry = tk.Entry(confirm_password_frame, show='*')
+        confirm_password_entry.pack(side=tk.RIGHT)
+        confirm_password_label = tk.Label(confirm_password_frame,
+                                          text='please confirm your password: ')
+        confirm_password_label.pack(side=tk.LEFT)
+
+        email_frame = tk.Frame(create_account_window)
+        email_frame.pack()
+
+
+        create_account_frame = tk.Frame(create_account_window)
+        create_account_frame.pack()
+        create_account_button = tk.Button(create_account_frame, text='create account', command=self.create_account)
+        create_account_button.pack()
+
+    def create_account(self):
+        """create an account object for the username and password the user gave.
+        also add the account object to the account_list
+        """
+
+
+
 
     def setup_account_info(self):
         """sets up the gui to display relevant information about the account
@@ -140,13 +205,7 @@ class GUI:
 
         Button1 = tk.button()  # create a tkinter button
 
-    def add_account(self):
-        """create an account object for the username and password the user gave.
-        also add the account object to the account_list
 
-        :param self:
-        :return:
-        """
 
     def generate_password(self):
         """generates a password from password_generator.py
