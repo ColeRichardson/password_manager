@@ -29,6 +29,7 @@ class GUI:
 
         self.root.title("It's Managed")
         self.setup_logon()  # prompt user with a button to ask to register
+        self.confirm_password_entry = ''
 
         #self.sock = Connection('127.0.0.1', 55555)
         # comment this line out to run gui without connection
@@ -101,10 +102,16 @@ class GUI:
 
         confirm_password_frame = tk.Frame(self.root)
         confirm_password_frame.pack()
-        confirm_password_entry = tk.Entry(confirm_password_frame, show='*')
-        confirm_password_entry.pack(side=tk.RIGHT)
+        self.confirm_password_entry = tk.Entry(confirm_password_frame, show='*')
+        self.confirm_password_entry.pack(side=tk.RIGHT)
         confirm_password_label = tk.Label(confirm_password_frame, text='please confirm your password: ')
         confirm_password_label.pack(side=tk.LEFT)
+
+        register_button = tk.Button(text='register account')
+        check_password_button = tk.Button(text='check password')  # command=check_password
+
+        register_button.pack()
+        check_password_button.pack()
 
         login_button = tk.Button(self.root, text='login', command=self.setup_logon)
         login_button.pack()
